@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Users,
   Briefcase,
@@ -11,12 +11,31 @@ import {
   Award,
   Target,
   Lightbulb,
+  BrickWall,
+  Book,
+  CookingPot,
+  ArrowUp
 } from "lucide-react";
 import imagem from "./assets/farol_logo.png";
 
 export default function ChurchEntrepreneursHub() {
   const [activeTab, setActiveTab] = useState("todos");
   const [selectedMember, setSelectedMember] = useState(null);
+  const [showTop, setShowTop] = useState(false);
+
+useEffect(() => {
+  const handleScroll = () => {
+    setShowTop(window.scrollY > 300);
+  };
+
+  window.addEventListener("scroll", handleScroll);
+  return () => window.removeEventListener("scroll", handleScroll);
+}, []);
+
+const scrollToTop = () => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+};
+
 
   // Dados de exemplo - substitua com seus dados reais
   const members = [
@@ -121,7 +140,11 @@ export default function ChurchEntrepreneursHub() {
   ];
 
   const categories = [
-    { id: "todos", name: "Todos", icon: Users, color: "bg-blue-500" },
+    { id: "todos", 
+      name: "Todos", 
+      icon: Users, 
+      color: "bg-blue-500" 
+    },
     {
       id: "tecnologia",
       name: "Tecnologia",
@@ -137,17 +160,31 @@ export default function ChurchEntrepreneursHub() {
     {
       id: "construcao",
       name: "Construção",
-      icon: Award,
+      icon: BrickWall,
       color: "bg-orange-500",
     },
-    { id: "saude", name: "Saúde", icon: Heart, color: "bg-red-500" },
-    { id: "educacao", name: "Educação", icon: Star, color: "bg-yellow-500" },
+    { id: "saude", 
+      name: "Saúde", 
+      icon: Heart, 
+      color: "bg-red-500" 
+    },
+    { id: "educacao", 
+      name: "Educação", 
+      icon: Book, 
+      color: "bg-yellow-500" 
+    },
     {
       id: "marketing",
       name: "Marketing",
       icon: TrendingUp,
       color: "bg-pink-500",
     },
+    {
+      id: "alimentação",
+      name: "Alimentação",
+      icon: CookingPot,
+      color: "bg-red-500",
+    }
   ];
 
   const filteredMembers =
@@ -162,7 +199,7 @@ export default function ChurchEntrepreneursHub() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <div className="bg-gradient-to-br from-blue-600 to-indigo-600  rounded-xl shadow-lg">
+              <div className="bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl shadow-lg">
                 <img src={imagem} alt="descrição" className="w-16 h-16" />
               </div>
 
@@ -186,7 +223,7 @@ export default function ChurchEntrepreneursHub() {
       </header>
 
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-16">
+      <div className="bg-indigo-900 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-4xl font-bold mb-4">
             Construindo Negócios com Propósito
@@ -202,7 +239,11 @@ export default function ChurchEntrepreneursHub() {
       {/* Categories Filter */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 mb-8">
         <div className="bg-white rounded-2xl shadow-xl p-6">
-          <div className="flex flex-wrap gap-3 justify-center">
+          {/* <div className="flex flex-wrap gap-3 justify-center"> */}
+          {/* <div className="grid grid-cols-4 gap-3"> */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+
+
             {categories.map((category) => {
               const Icon = category.icon;
               const isActive = activeTab === category.id;
@@ -389,16 +430,26 @@ export default function ChurchEntrepreneursHub() {
 
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-8 mt-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-gray-400">
-            "Cada um administre aos outros o dom como o recebeu, como bons
-            despenseiros da multiforme graça de Deus." - 1 Pedro 4:10
-          </p>
-          <p className="text-gray-500 mt-4">
-            © 2026 Empreendedores de Cristo - Todos os direitos reservados
-          </p>
-        </div>
-      </footer>
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <p className="text-gray-400">
+      "Cada um administre aos outros o dom como o recebeu, como bons
+      despenseiros da multiforme graça de Deus." - 1 Pedro 4:10
+    </p>
+    <p className="text-gray-500 mt-4">
+      © 2026 Empreendedores de Cristo - Todos os direitos reservados
+    </p>
+  </div>
+</footer>
+
+{showTop && (
+  <button
+    onClick={scrollToTop}
+    className="fixed bottom-6 right-6 z-50 bg-blue-600 hover:bg-blue-700 text-white p-1 rounded-full shadow-xl transition-all duration-300 hover:scale-110"
+  >
+    <ArrowUp className="w-6 h-6" />
+  </button>
+)}
+
     </div>
   );
 }
